@@ -99,23 +99,23 @@ module.exports = function(config) {
   }
 
   if (process.env.TRAVIS) {
-    if (process.env.BROWSER_STACK_USERNAME) {
-      settings.browsers = [
-        'chrome_bs',
-        'firefox_bs',
-        'safari_bs',
-        'edge_bs',
-        'ie11_bs',
-        'ie10_bs',
-        'ie9_bs',
-        'ie8_bs'
-      ];
+    settings.browsers = settings.browsers || [];
+    settings.browsers = settings.browsers.concat(['travisChrome', 'Firefox']);
+  }
+
+  if (process.env.BROWSER_STACK_USERNAME) {
+    settings.browsers = settings.browsers || [];
+    settings.browsers = settings.browsers.concat([
+      'safari_bs',
+      'edge_bs',
+      'ie11_bs',
+      'ie10_bs',
+      'ie9_bs',
+      'ie8_bs'
+    ]);
 
     // fix ie disconnect issues
     settings.browserDisconnectTolerance = 3;
-    } else {
-      settings.browsers = ['Firefox'];
-    }
   }
 
   config.set(settings);
@@ -123,6 +123,10 @@ module.exports = function(config) {
 
 function getCustomLaunchers(){
   return {
+    travisChrome: {
+      base: 'Chrome',
+      flags: ['--no-sandbox']
+    },
     chrome_bs: {
       base: 'BrowserStack',
       browser: 'chrome',

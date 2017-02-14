@@ -15,5 +15,6 @@ export default function(commit, commitRange) {
   const output = sh.exec(command, {async: false, silent: true}).stdout;
 
   const files = output.split('\n').filter(Boolean);
+  console.log(files);
   return files.every((file) => file.startsWith('docs') || path.extname(file) === '.md');
 };
